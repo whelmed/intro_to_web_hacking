@@ -1,0 +1,5 @@
+<IfModule mod_php5.c>
+    magic_quotes_gpc = Off
+    allow_url_fopen = On
+    allow_url_include = On
+</IfModule>
