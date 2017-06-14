@@ -45,15 +45,18 @@ Vagrant.configure("2") do |config|
 
     mysql -h 127.0.0.1 -u root -ph3k0nf_4nfJs  -e "CREATE DATABASE dvwa;"
     mysql -h 127.0.0.1 -u root -ph3k0nf_4nfJs  -e "grant all privileges on dvwa.* to 'root'@'localhost' identified by 'h3k0nf_4nfJs'; flush privileges;"
-    #mysql -h 127.0.0.1 -u root -ph3k0nf_4nfJs  -e "flush privileges;"
 
     cp /vagrant/config.php /var/www/html/config/config.inc.php
     cp /vagrant/.htaccess /var/www/html/config/.htaccess
-    
+
     sudo chmod g+w /var/www/html/hackable/uploads/
     sudo chmod g+w /var/www/html/external/phpids/0.6/lib/IDS/tmp/phpids_log.txt
-    
+
     service apache2 restart
+    # Init the database
+    CSRF=$(curl -s -c dvwa.cookie "http://localhost/setup.php" | awk -F 'value=' '/user_token/ {print $2}' | cut -d "'" -f2)
+    curl -L -b dvwa.cookie --data "create_db=Create&user_token=${CSRF}" "http://localhost/setup.php" 
+    
     
   SHELL
 end
